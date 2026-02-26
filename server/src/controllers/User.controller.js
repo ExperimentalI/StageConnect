@@ -1,6 +1,7 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { generateWelcomeEmail, sendEmail } from "../utils/email.js";
 
 class UserConnect {
   static async signup(req, res) {
@@ -20,9 +21,26 @@ class UserConnect {
         role,
       });
 
+      try {
+        const welcomeEmail = generateWelcomeEmail(user);
+        await sendEmail(welcomeEmail);
+      } catch (error) {
+        console.error("❌ Welcome email failed:", {
+          message: error?.message,
+          code: error?.code,
+          responseCode: error?.responseCode,
+          response: error?.response,
+          command: error?.command,
+        });
+      }
+
+      if (!process.env.JWT_SECRET) {
+        return res.status(500).json({ error: "JWT secret is not configured" });
+      }
+
       const token = jwt.sign(
         { userId: user._id, role: user.role },
-        process.env.JWT_SECRET || "your-secret-key",
+        process.env.JWT_SECRET,
         { expiresIn: "7d" },
       );
 
@@ -33,6 +51,9 @@ class UserConnect {
         token,
       });
     } catch (error) {
+      if (error?.code === 11000) {
+        return res.status(400).json({ error: "User already exists" });
+      }
       res.status(500).json({ error: error.message });
     }
   }
@@ -55,9 +76,13 @@ class UserConnect {
           .json({ error: "Email or password is incorrect" });
       }
 
+      if (!process.env.JWT_SECRET) {
+        return res.status(500).json({ error: "JWT secret is not configured" });
+      }
+
       const token = jwt.sign(
         { userId: user._id, role: user.role },
-        process.env.JWT_SECRET || "your-secret-key",
+        process.env.JWT_SECRET,
         { expiresIn: "7d" },
       );
 
@@ -99,6 +124,9 @@ class UserConnect {
 
       res.json(user);
     } catch (error) {
+      if (error?.code === 11000) {
+        return res.status(400).json({ error: "Email already in use" });
+      }
       res.status(500).json({ error: error.message });
     }
   }
@@ -127,6 +155,9 @@ class UserConnect {
 
       res.json(user);
     } catch (error) {
+      if (error?.code === 11000) {
+        return res.status(400).json({ error: "Email already in use" });
+      }
       res.status(500).json({ error: error.message });
     }
   }

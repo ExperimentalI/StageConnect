@@ -2,6 +2,8 @@ import { Company } from "../models/companyProfile.model.js";
 import { User } from "../models/user.model.js";
 import { InternShip } from "../models/internShip.model.js";
 import { Candidature } from "../models/application.model.js";
+import fs from "fs";
+import { uploadToCloudinary } from "../utils/cloudinary.js";
 
 class CompanyController {
   static async createProfile(req, res) {
@@ -133,11 +135,22 @@ class CompanyController {
 
   static async uploadLogo(req, res) {
     try {
-      const { logo } = req.body;
+      if (!req.file) {
+        return res.status(400).json({ error: "Logo file is required" });
+      }
+
+      const uploadResult = await uploadToCloudinary(req.file.path, {
+        folder: "stageconnect/company/logo",
+        resourceType: "image",
+      });
+
+      try {
+        await fs.promises.unlink(req.file.path);
+      } catch (error) {}
 
       const profile = await Company.findOneAndUpdate(
         { userId: req.user._id },
-        { logo, isProfileComplete: true },
+        { logo: uploadResult.secure_url, isProfileComplete: true },
         { new: true },
       );
 
@@ -232,11 +245,9 @@ class CompanyController {
       const user = await User.findById(userId);
 
       if (!user || user.role !== "company") {
-        return res
-          .status(403)
-          .json({
-            error: "Only companies can view applications for their internships",
-          });
+        return res.status(403).json({
+          error: "Only companies can view applications for their internships",
+        });
       }
 
       const companyProfile = await Company.findOne({ userId });

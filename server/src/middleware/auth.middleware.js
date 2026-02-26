@@ -10,7 +10,11 @@ export const authenticateToken = async (req, res, next) => {
       return res.status(401).json({ error: "Access token required" });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "your-secret-key");
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({ error: "JWT secret is not configured" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.userId).select("-password");
 
     if (!user || !user.isActive) {
@@ -50,9 +54,13 @@ export const optionalAuth = async (req, res, next) => {
     const token = authHeader && authHeader.split(" ")[1];
 
     if (token) {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || "your-secret-key");
+      if (!process.env.JWT_SECRET) {
+        return next();
+      }
+
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const user = await User.findById(decoded.userId).select("-password");
-      
+
       if (user && user.isActive) {
         req.user = user;
       }

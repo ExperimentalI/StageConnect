@@ -2,6 +2,8 @@ import { StudentProfile } from "../models/studentProfile.model.js";
 import { User } from "../models/user.model.js";
 import { Candidature } from "../models/application.model.js";
 import { InternShip } from "../models/internShip.model.js";
+import fs from "fs";
+import { uploadToCloudinary } from "../utils/cloudinary.js";
 
 class StudentProfileController {
   static async createProfile(req, res) {
@@ -103,7 +105,21 @@ class StudentProfileController {
 
   static async uploadCV(req, res) {
     try {
-      const { filename, url } = req.body;
+      if (!req.file) {
+        return res.status(400).json({ error: "CV file is required" });
+      }
+
+      const uploadResult = await uploadToCloudinary(req.file.path, {
+        folder: "stageconnect/student/cv",
+        resourceType: "raw",
+      });
+
+      try {
+        await fs.promises.unlink(req.file.path);
+      } catch (error) {}
+
+      const filename = req.file.originalname;
+      const url = uploadResult.secure_url;
 
       const profile = await StudentProfile.findOneAndUpdate(
         { userId: req.user._id },
@@ -126,7 +142,22 @@ class StudentProfileController {
 
   static async uploadProfilePicture(req, res) {
     try {
-      const { filename, url } = req.body;
+      if (!req.file) {
+        return res
+          .status(400)
+          .json({ error: "Profile picture file is required" });
+      }
+
+      const uploadResult = await uploadToCloudinary(req.file.path, {
+        folder: "stageconnect/student/profile",
+        resourceType: "image",
+      });
+
+      try {
+        await fs.promises.unlink(req.file.path);
+      } catch (error) {}
+
+      const url = uploadResult.secure_url;
 
       const profile = await StudentProfile.findOneAndUpdate(
         { userId: req.user._id },
