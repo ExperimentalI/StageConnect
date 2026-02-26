@@ -65,11 +65,11 @@ const studentProfileSchema = new mongoose.Schema({
     },
   },
   bio: { type: String, maxlength: 500 },
-  isProfileComplete: { type: String, default: false },
-  uploadedAt: { type: Date, defalut: Date.now },
+  isProfileComplete: { type: Boolean, default: false },
+  uploadedAt: { type: Date, default: Date.now },
 });
 
 export const StudentProfile = mongoose.model(
   "StudentProfile",
-  studentProfileSchema
+  studentProfileSchema,
 );
