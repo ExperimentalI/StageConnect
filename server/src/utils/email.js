@@ -1,9 +1,9 @@
 import nodemailer from "nodemailer";
 
 const createTransporter = () => {
-  return nodemailer.createTransporter({
+  return nodemailer.createTransport({
     host: process.env.EMAIL_HOST || "smtp.gmail.com",
-    port: process.env.EMAIL_PORT || 587,
+    port: Number(process.env.EMAIL_PORT) || 587,
     secure: false,
     auth: {
       user: process.env.EMAIL_USER,
@@ -15,9 +15,10 @@ const createTransporter = () => {
 export const sendEmail = async (options) => {
   try {
     const transporter = createTransporter();
-    
+
     const mailOptions = {
-      from: process.env.EMAIL_FROM || `"StageConnect" <${process.env.EMAIL_USER}>`,
+      from:
+        process.env.EMAIL_FROM || `"StageConnect" <${process.env.EMAIL_USER}>`,
       to: options.to,
       subject: options.subject,
       html: options.html,
@@ -29,13 +30,18 @@ export const sendEmail = async (options) => {
     return info;
   } catch (error) {
     console.error("❌ Email sending failed:", error.message);
+    console.error("❌ Email error code:", error?.code);
+    console.error("❌ Email error responseCode:", error?.responseCode);
+    console.error("❌ Email error response:", error?.response);
+    console.error("❌ Email error command:", error?.command);
+    console.error("❌ Email error stack:", error?.stack);
     throw new Error("Failed to send email");
   }
 };
 
 export const generateWelcomeEmail = (user) => {
   const isStudent = user.role === "student";
-  
+
   return {
     to: user.email,
     subject: "Bienvenue sur StageConnect !",
@@ -63,7 +69,9 @@ export const generateWelcomeEmail = (user) => {
             <p>Bonjour ${user.firstName || user.email},</p>
             <p>Nous sommes ravis de vous accueillir sur StageConnect, la plateforme qui connecte les étudiants et les entreprises pour des stages de qualité.</p>
             
-            ${isStudent ? `
+            ${
+              isStudent
+                ? `
               <p>En tant qu'étudiant, vous pouvez :</p>
               <ul>
                 <li>🔍 Rechercher des stages dans votre domaine</li>
@@ -71,7 +79,8 @@ export const generateWelcomeEmail = (user) => {
                 <li>📤 Postuler aux offres qui vous intéressent</li>
                 <li>📊 Suivre l'état de vos candidatures</li>
               </ul>
-            ` : `
+            `
+                : `
               <p>En tant qu'entreprise, vous pouvez :</p>
               <ul>
                 <li>📝 Publier des offres de stage</li>
@@ -79,27 +88,34 @@ export const generateWelcomeEmail = (user) => {
                 <li>🔍 Trouver les meilleurs talents</li>
                 <li>📈 Suivre vos statistiques de recrutement</li>
               </ul>
-            `}
+            `
+            }
             
             <p>Commencez dès maintenant en complétant votre profil :</p>
-            <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard" class="button">Accéder à mon tableau de bord</a>
+            <a href="${process.env.FRONTEND_URL || "http://localhost:3000"}/dashboard" class="button">Accéder à mon tableau de bord</a>
             
             <p>Si vous avez des questions, n'hésitez pas à nous contacter.</p>
             
             <p>Cordialement,<br>L'équipe StageConnect</p>
           </div>
           <div class="footer">
-            <p>© 2024 StageConnect. Tous droits réservés.</p>
+            <p>© ${new Date().getFullYear()} StageConnect. Tous droits réservés.</p>
             <p>Ce message a été envoyé à ${user.email}</p>
           </div>
         </div>
       </body>
       </html>
-    `
+    `,
   };
 };
 
 export const generateApplicationEmail = (student, internship, company) => {
+  const studentName = student?.firstName || student?.email || "";
+  const companyName = company?.companyName || company?.name || "";
+  const locationCity = internship?.location?.city || "";
+  const duration = internship?.duration ?? "";
+  const workType = internship?.workType || "";
+
   return {
     to: student.email,
     subject: `Candidature envoyée : ${internship.title}`,
@@ -124,15 +140,15 @@ export const generateApplicationEmail = (student, internship, company) => {
             <h1>✅ Candidature envoyée avec succès !</h1>
           </div>
           <div class="content">
-            <p>Bonjour ${student.firstName},</p>
+            <p>Bonjour ${studentName},</p>
             <p>Votre candidature a été envoyée avec succès pour l'offre suivante :</p>
             
             <div class="internship-card">
               <h3>${internship.title}</h3>
-              <p><strong>Entreprise :</strong> ${company.companyName}</p>
-              <p><strong>Lieu :</strong> ${internship.location.city}</p>
-              <p><strong>Durée :</strong> ${internship.duration} mois</p>
-              <p><strong>Type :</strong> ${internship.workType}</p>
+              <p><strong>Entreprise :</strong> ${companyName}</p>
+              <p><strong>Lieu :</strong> ${locationCity}</p>
+              <p><strong>Durée :</strong> ${duration} mois</p>
+              <p><strong>Type :</strong> ${workType}</p>
             </div>
             
             <p>Vous pouvez suivre l'état de votre candidature depuis votre tableau de bord.</p>
@@ -142,12 +158,12 @@ export const generateApplicationEmail = (student, internship, company) => {
             <p>Cordialement,<br>L'équipe StageConnect</p>
           </div>
           <div class="footer">
-            <p>© 2024 StageConnect. Tous droits réservés.</p>
+            <p>© ${new Date().getFullYear()} StageConnect. Tous droits réservés.</p>
           </div>
         </div>
       </body>
       </html>
-    `
+    `,
   };
 };
 
@@ -181,10 +197,10 @@ export const generateInterviewEmail = (student, internship, interview) => {
             
             <div class="interview-card">
               <h3>${internship.title}</h3>
-              <p><strong>Date :</strong> ${new Date(interview.date).toLocaleDateString('fr-FR')} à ${new Date(interview.date).toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}</p>
+              <p><strong>Date :</strong> ${new Date(interview.date).toLocaleDateString("fr-FR")} à ${new Date(interview.date).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}</p>
               <p><strong>Type :</strong> ${interview.type}</p>
-              ${interview.location ? `<p><strong>Lieu :</strong> ${interview.location}</p>` : ''}
-              ${interview.notes ? `<p><strong>Notes :</strong> ${interview.notes}</p>` : ''}
+              ${interview.location ? `<p><strong>Lieu :</strong> ${interview.location}</p>` : ""}
+              ${interview.notes ? `<p><strong>Notes :</strong> ${interview.notes}</p>` : ""}
             </div>
             
             <p>Préparez-vous bien pour cet entretien et n'hésitez pas à nous contacter si vous avez des questions.</p>
@@ -194,11 +210,11 @@ export const generateInterviewEmail = (student, internship, interview) => {
             <p>Cordialement,<br>L'équipe StageConnect</p>
           </div>
           <div class="footer">
-            <p>© 2024 StageConnect. Tous droits réservés.</p>
+            <p>© ${new Date().getFullYear()} StageConnect. Tous droits réservés.</p>
           </div>
         </div>
       </body>
       </html>
-    `
+    `,
   };
 };
