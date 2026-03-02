@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, GraduationCap, Building2, ChevronDown, Bell, User, MessageSquare } from "lucide-react";
 import { mockConversations } from "../data/mockData";
 

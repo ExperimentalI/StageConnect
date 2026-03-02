@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import {
   Bell, Search, Clock, CheckCircle, XCircle, Eye, FileText,
   Star, ArrowRight, MapPin, Bookmark, Zap
@@ -23,10 +23,10 @@ export default function StudentDashboard({ onLogout }: StudentDashboardProps) {
   const recommended = mockOffers.filter((o) => o.featured).slice(0, 3);
 
   const stats = [
-    { label: "Candidatures envoyées",  value: mockApplications.length,                                                    icon: FileText  },
-    { label: "En cours d'examen",      value: mockApplications.filter(a => a.status === "En cours d'examen").length,      icon: Clock     },
-    { label: "Présélections",          value: mockApplications.filter(a => a.status === "Présélectionné").length,         icon: Star      },
-    { label: "Offres sauvegardées",    value: 5,                                                                           icon: Bookmark  },
+    { label: "Candidatures envoyées",  value: mockApplications.length, icon: FileText  },
+    { label: "En cours d'examen",      value: mockApplications.filter(a => a.status === "En cours d'examen").length, icon: Clock     },
+    { label: "Présélections",          value: mockApplications.filter(a => a.status === "Présélectionné").length, icon: Star      },
+    { label: "Offres sauvegardées",    value: 5, icon: Bookmark  },
   ];
 
   return (

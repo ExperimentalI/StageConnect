@@ -1,3 +1,13 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+
+body{
+        /* font-family: "Jaro", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal; */
+        font-family: "Playfair Display", serif;
+        font-optical-sizing: auto;
+        font-style: normal;
+}

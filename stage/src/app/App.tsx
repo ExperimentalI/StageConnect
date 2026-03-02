@@ -1,6 +1,8 @@
 import { useState, useMemo } from "react";
-import { RouterProvider } from "react-router";
+import { RouterProvider } from "react-router/dom";
 import { createAppRouter } from "./routes";
+import { QueryProvider, AuthProvider } from "./context";
+import "../styles/index.css"
 
 export default function App() {
   const [userType, setUserType] = useState<"student" | "company" | null>(null);
@@ -18,5 +20,11 @@ export default function App() {
     [userType]
   );
 
-  return <RouterProvider router={router} />;
+  return (
+    <QueryProvider>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </QueryProvider>
+  );
 }

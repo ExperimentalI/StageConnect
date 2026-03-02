@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import {
   Plus, Eye, Users, TrendingUp, BarChart3, CheckCircle,
   Clock, Mail, ChevronRight, FileText
@@ -68,6 +68,7 @@ export default function CompanyDashboard({ onLogout }: CompanyDashboardProps) {
             <p className="text-gray-500 text-sm mt-1">Bienvenue, Orange Côte d'Ivoire 🏢</p>
           </div>
           <button
+            type="button"
             onClick={() => navigate("/company/post-offer")}
             className="flex items-center gap-2 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all hover:opacity-90"
             style={{ background: "#F97316" }}
@@ -132,7 +133,7 @@ export default function CompanyDashboard({ onLogout }: CompanyDashboardProps) {
               <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
                 <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
                   <h3 className="font-bold text-gray-900">Candidatures récentes</h3>
-                  <button onClick={() => setActiveTab("candidates")} className="text-xs font-semibold flex items-center gap-1 hover:opacity-80" style={{ color: "#F97316" }}>
+                  <button type="button" onClick={() => setActiveTab("candidates")} className="text-xs font-semibold flex items-center gap-1 hover:opacity-80" style={{ color: "#F97316" }}>
                     Voir toutes <ChevronRight size={12} />
                   </button>
                 </div>

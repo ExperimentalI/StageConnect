@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft, MapPin, Clock, DollarSign, Users, Eye, Calendar,
   CheckCircle, Share2, BookmarkPlus, Wifi, Building2, Send, X,
