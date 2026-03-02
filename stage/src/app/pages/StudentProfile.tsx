@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import {
   Edit2, Upload, Plus, X, MapPin, Phone, Mail, Globe, Linkedin,
   GraduationCap, Briefcase, Star, CheckCircle, Save, Camera

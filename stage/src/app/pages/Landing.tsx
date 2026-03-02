@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import {
   Search, MapPin, ArrowRight, Star, CheckCircle, GraduationCap,
   Building2, TrendingUp, Zap, Bell, Users, BarChart3, ChevronRight
@@ -47,9 +47,9 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-2 mb-6">
+              <div className="inline-flex items-center gap-2 bg-blue-200 border border-white/20 rounded-full px-4 py-2 mb-6">
                 <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                <span className="text-white text-xs">🇨🇮 N°1 des stages en Côte d'Ivoire</span>
+                <span className="text-blue-800 text-xs">🇨🇮 N°1 des stages en Côte d'Ivoire</span>
               </div>
               <h1 className="text-4xl lg:text-5xl text-white mb-6 leading-tight" style={{ fontWeight: 800 }}>
                 Trouvez votre stage{" "}
@@ -88,8 +88,8 @@ export default function Landing() {
                 </div>
                 <button
                   onClick={handleSearch}
-                  className="text-white px-6 py-3 rounded-xl text-sm transition-all hover:opacity-90 whitespace-nowrap"
-                  style={{ background: "#F97316" }}
+                  className="bg-blue-500 text-white px-6 py-3 rounded-xl text-sm transition-all hover:opacity-90 whitespace-nowrap"
+                
                 >
                   Rechercher
                 </button>
@@ -185,8 +185,8 @@ export default function Landing() {
               <p className="text-gray-500">Les meilleures opportunités du moment</p>
             </div>
             <button onClick={() => navigate("/offers")}
-              className="hidden sm:flex items-center gap-2 text-sm font-semibold hover:opacity-80 transition-opacity"
-              style={{ color: "#F97316" }}>
+              className="hidden sm:flex items-center gap-2 text-sm text-blue-600 font-semibold hover:opacity-80 transition-opacity"
+              >
               Voir toutes les offres <ArrowRight size={16} />
             </button>
           </div>
@@ -198,7 +198,7 @@ export default function Landing() {
                   <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center text-2xl">
                     {offer.companyLogo}
                   </div>
-                  {offer.remote && <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">Remote</span>}
+                  {offer.remote && <span className="text-xs bg-gray-200 text-gray-600 px-2.5 py-1 rounded-full">Remote</span>}
                 </div>
                 <h3 className="text-gray-900 mb-1 group-hover:text-orange-500 transition-colors" style={{ fontWeight: 600 }}>
                   {offer.title}
@@ -209,7 +209,7 @@ export default function Landing() {
                     <MapPin size={11} /> {offer.location}
                   </span>
                   <span className="text-xs text-gray-500 bg-gray-50 px-2.5 py-1 rounded-full">⏱ {offer.duration}</span>
-                  <span className="text-xs font-semibold bg-orange-50 px-2.5 py-1 rounded-full" style={{ color: "#F97316" }}>
+                  <span className="text-xs font-semibold bg-blue-200 px-2.5 py-1 rounded-full" >
                     {offer.salary}/mois
                   </span>
                 </div>
@@ -241,8 +241,8 @@ export default function Landing() {
                 { step: "03", icon: Zap, title: "Postulez en un clic", desc: "Envoyez votre candidature directement depuis la plateforme avec votre lettre de motivation." },
               ].map((item) => (
                 <div key={item.step} className="flex gap-5">
-                  <div className="w-12 h-12 rounded-2xl bg-orange-50 flex items-center justify-center shrink-0">
-                    <item.icon size={22} style={{ color: "#F97316" }} />
+                  <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center shrink-0">
+                    <item.icon size={22} className="text-blue-400"/>
                   </div>
                   <div>
                     <div className="text-xs font-bold mb-1 text-gray-400">ÉTAPE {item.step}</div>
@@ -261,9 +261,9 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 rounded-full px-4 py-2 mb-6">
-                <Building2 size={14} className="text-orange-400" />
-                <span className="text-orange-400 text-xs font-semibold">Pour les entreprises</span>
+              <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-2 mb-6">
+                <Building2 size={14} className="text-blue-400" />
+                <span className="text-blue-400 text-xs font-semibold">Pour les entreprises</span>
               </div>
               <h2 className="text-3xl text-white mb-5" style={{ fontWeight: 700 }}>
                 Recrutez les meilleurs stagiaires de la région
@@ -279,14 +279,14 @@ export default function Landing() {
                   { icon: Bell,     text: "Alertes candidatures"      },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
-                    <item.icon size={16} className="text-orange-400 shrink-0" />
+                    <item.icon size={16} className="text-blue-500 shrink-0" />
                     <span className="text-sm text-gray-300">{item.text}</span>
                   </div>
                 ))}
               </div>
               <button onClick={() => navigate("/auth?type=company")}
-                className="flex items-center gap-2 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all hover:opacity-90"
-                style={{ background: "#F97316" }}>
+                className="bg-blue-500 flex items-center gap-2 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all hover:opacity-90"
+                >
                 Commencer gratuitement <ArrowRight size={16} />
               </button>
             </div>
@@ -314,8 +314,7 @@ export default function Landing() {
                 </div>
                 <p className="text-sm text-gray-600 leading-relaxed mb-5 italic">"{t.text}"</p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-bold"
-                    style={{ background: "#111827" }}>
+                  <div className="bg-blue-400 w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-bold">
                     {t.avatar}
                   </div>
                   <div>
@@ -341,8 +340,7 @@ export default function Landing() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button onClick={() => navigate("/auth?type=student")}
-              className="flex items-center justify-center gap-2 text-white px-8 py-4 rounded-xl text-sm font-semibold transition-all hover:opacity-90"
-              style={{ background: "#F97316" }}>
+              className="bg-blue-500 flex items-center justify-center gap-2 text-white px-8 py-4 rounded-xl text-sm font-semibold transition-all hover:opacity-90">
               <GraduationCap size={18} /> Je suis étudiant – Je m'inscris
             </button>
             <button onClick={() => navigate("/auth?type=company")}

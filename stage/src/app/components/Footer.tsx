@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { MapPin, Mail, Phone, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 
 export function Footer() {
@@ -9,11 +9,11 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #F97316, #16A34A)" }}>
+              <div className="border-4 border-blue-500 w-9 h-9 rounded-xl flex items-center justify-center">
                 <span className="text-white text-sm">SC</span>
               </div>
               <span className="text-white" style={{ fontSize: "1.15rem", fontWeight: 700 }}>
-                Stage<span style={{ color: "#F97316" }}>Connect</span>
+                Stage<span className="text-blue-500">Connect</span>
               </span>
             </div>
             <p className="text-sm text-gray-400 leading-relaxed mb-5">
@@ -21,7 +21,7 @@ export function Footer() {
             </p>
             <div className="flex gap-3">
               {[Facebook, Twitter, Linkedin, Instagram].map((Icon, i) => (
-                <a key={i} href="#" className="w-9 h-9 bg-gray-800 hover:bg-orange-500 rounded-lg flex items-center justify-center transition-colors">
+                <a key={i} href="#" className="w-9 h-9 bg-gray-800 hover:bg-blue-500 rounded-lg flex items-center justify-center transition-colors">
                   <Icon size={16} />
                 </a>
               ))}
@@ -34,7 +34,7 @@ export function Footer() {
             <ul className="space-y-2.5">
               {["Rechercher un stage", "Mon tableau de bord", "Mon profil", "Mes candidatures", "Recommandations"].map((item) => (
                 <li key={item}>
-                  <Link to="/offers" className="text-sm text-gray-400 hover:text-orange-400 transition-colors">
+                  <Link to="/offers" className="text-sm text-gray-400 hover:text-blue-500 transition-colors">
                     {item}
                   </Link>
                 </li>
@@ -48,7 +48,7 @@ export function Footer() {
             <ul className="space-y-2.5">
               {["Publier une offre", "Gérer les candidatures", "Tableau de bord", "Profil entreprise", "Statistiques"].map((item) => (
                 <li key={item}>
-                  <Link to="/auth?type=company" className="text-sm text-gray-400 hover:text-orange-400 transition-colors">
+                  <Link to="/auth?type=company" className="text-sm text-gray-400 hover:text-blue-500 transition-colors">
                     {item}
                   </Link>
                 </li>
@@ -61,16 +61,16 @@ export function Footer() {
             <h4 className="text-white mb-4" style={{ fontSize: "0.9rem" }}>Contact</h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-2.5 text-sm text-gray-400">
-                <MapPin size={15} className="text-orange-400 mt-0.5 shrink-0" />
+                <MapPin size={15} className="text-blue-400 mt-0.5 shrink-0" />
                 Plateau, Abidjan, Côte d'Ivoire
               </li>
               <li className="flex items-center gap-2.5 text-sm text-gray-400">
-                <Mail size={15} className="text-orange-400 shrink-0" />
+                <Mail size={15} className="text-blue-400 shrink-0" />
                 contact@stageconnect.ci
               </li>
               <li className="flex items-center gap-2.5 text-sm text-gray-400">
-                <Phone size={15} className="text-orange-400 shrink-0" />
-                +225 07 00 00 00 00
+                <Phone size={15} className="text-blue-400 shrink-0" />
+                +225 07 69 98 82 11
               </li>
             </ul>
           </div>
@@ -78,7 +78,7 @@ export function Footer() {
 
         <div className="mt-12 pt-6 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-500">
-            © 2026 StageConnect. Tous droits réservés. 🇨🇮 Made in Côte d'Ivoire
+            © {new Date().getFullYear()} StageConnect. Tous droits réservés. 🇨🇮 Made in Côte d'Ivoire
           </p>
           <div className="flex gap-5">
             {["Conditions d'utilisation", "Politique de confidentialité", "Aide"].map((item) => (

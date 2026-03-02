@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams, Link } from "react-router";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { Eye, EyeOff, GraduationCap, Building2, ArrowLeft, CheckCircle, Upload } from "lucide-react";
 
 interface AuthProps {
@@ -27,7 +27,7 @@ export default function Auth({ onLogin }: AuthProps) {
     if (type === "student" || type === "company") setUserType(type);
   }, [searchParams]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     setLoading(true);
     await new Promise((r) => setTimeout(r, 1200));
@@ -56,11 +56,11 @@ export default function Auth({ onLogin }: AuthProps) {
         </div>
         <div className="relative z-10">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #F97316, #16A34A)" }}>
+            <div className="border-4 border-blue-500 w-10 h-10 rounded-xl flex items-center justify-center">
               <span className="text-white text-sm font-bold">SC</span>
             </div>
             <span className="text-white text-xl font-bold">
-              Stage<span style={{ color: "#F97316" }}>Connect</span>
+              Stage<span className="text-blue-500">Connect</span>
             </span>
           </Link>
         </div>
@@ -88,7 +88,7 @@ export default function Auth({ onLogin }: AuthProps) {
           </div>
         </div>
         <div className="relative z-10 text-xs text-gray-600">
-          © 2026 StageConnect 🇨🇮 · Abidjan, Côte d'Ivoire
+          © {new Date().getFullYear()} StageConnect 🇨🇮 · Abidjan, Côte d'Ivoire
         </div>
       </div>
 
@@ -232,7 +232,7 @@ export default function Auth({ onLogin }: AuthProps) {
 
             {mode === "login" && (
               <div className="text-right">
-                <button type="button" className="text-xs text-orange-500 hover:text-orange-600">
+                <button type="button" className="text-xs text-blue-500 hover:text-blue-600">
                   Mot de passe oublié ?
                 </button>
               </div>
@@ -241,8 +241,8 @@ export default function Auth({ onLogin }: AuthProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full text-white py-3.5 rounded-xl text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-70 flex items-center justify-center gap-2"
-              style={{ background: "linear-gradient(135deg, #F97316, #ea6c0a)" }}
+              className="bg-blue-500 w-full text-white py-3.5 rounded-xl text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-70 flex items-center justify-center gap-2"
+              
             >
               {loading ? (
                 <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Connexion...</>
@@ -256,19 +256,19 @@ export default function Auth({ onLogin }: AuthProps) {
             {mode === "login" ? "Pas encore de compte ?" : "Déjà inscrit ?"}{" "}
             <button
               onClick={() => setMode(mode === "login" ? "register" : "login")}
-              className="text-orange-500 font-semibold hover:text-orange-600 transition-colors"
+              className="text-blue-500 font-semibold hover:text-blue-600 transition-colors"
             >
               {mode === "login" ? "S'inscrire gratuitement" : "Se connecter"}
             </button>
           </p>
 
-          {mode === "login" && (
+          {/* {mode === "login" && (
             <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-100">
               <p className="text-xs text-blue-600 text-center">
                 💡 <span className="font-semibold">Démo :</span> Cliquez sur "Se connecter" pour accéder à la plateforme
               </p>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>
